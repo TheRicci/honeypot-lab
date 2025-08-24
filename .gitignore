@@ -1,0 +1,209 @@
+# Docker and container related
+*.env
+.env
+.env.local
+.env.*.local
+
+# Docker volumes and data
+wazuh_ruleset/
+wazuh_api_configuration/
+wazuh_etc/
+wazuh_queue/
+wazuh_var_multigroups/
+wazuh_integrations/
+wazuh_active_response/
+wazuh_agentless/
+wazuh_wodles/
+filebeat_var/
+filebeat_etc/
+wazuh-indexer-data/
+wazuh-dashboard-config/
+wazuh-dashboard-custom/
+
+# Logs directory - all generated log files
+logs/modsec/*
+logs/Nginx/*
+logs/suricata/*
+logs/wazuh/*
+*.log
+*.log.*
+
+# Generated certificates and SSL files
+config/wazuh_indexer_ssl_certs/*
+*.pem
+*.key
+*.crt
+*.csr
+*.srl
+
+# Build artifacts and binaries
+honeypot-go/honeypot-go
+threat-central/threat-central
+*.exe
+*.bin
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Cache directories
+.cache/
+*.cache
+
+# Node modules (if any)
+node_modules/
+
+# Python cache (if any)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Go build cache
+go.sum
+
+# Temporary output files
+out/
+*.out
+
+# Suricata and Zeek temporary files
+*.pcap
+*.pcapng
+capture_loss.log
+*.tmp
+
+# Wazuh temporary files
+*.tmp
+*.pid
+*.lock
+
+# ModSecurity temporary files
+*.tmp
+*.cache
+
+# Fluent Bit temporary files
+*.tmp
+*.pos
+
+# Filebeat temporary files
+*.tmp
+*.pos
+
+# Logstash temporary files
+*.tmp
+*.lock
+
+# Nginx temporary files
+*.tmp
+*.pid
+*.lock
+
+# Docker compose override files
+docker-compose.override.yml
+docker-compose.*.yml
+!docker-compose.yml
+
+# Terraform files (if used)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Ansible files (if used)
+*.retry
+
+# Kubernetes files (if used)
+*.kubeconfig
+
+# Helm files (if used)
+charts/
+*.tgz
+
+# Backup and archive files
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration backups
+*.conf.bak
+*.conf.old
+*.yml.bak
+*.yml.old
+
+# Runtime files
+*.pid
+*.sock
+*.lock
+*.fifo
+
+# Test coverage reports
+coverage/
+*.coverage
+*.lcov
+
+# Documentation builds
+docs/_build/
+
+# Package manager files
+package-lock.json
+yarn.lock
+Gemfile.lock
+Pipfile.lock
+
+# Local development files
+.local/
+local/
+dev/
+development/
+
+# Monitoring and metrics
+prometheus_data/
+grafana_data/
+*.metrics
+
+# Security scan results
+*.sarif
+*.json.sarif
+security-scan-results/
+
+# Backup directories
+backup/
+backups/
+*.backup/
+
+# Temporary directories
+tmp/
+temp/
+temporary/

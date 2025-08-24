@@ -1,0 +1,11 @@
+FROM zeek/zeek:latest
+
+USER root
+
+# make sure sbin dirs are on PATH
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH}"
+
+RUN apt-get update \
+ && apt-get install -y iproute2 net-tools \
+ && rm -rf /var/lib/apt/lists/*
+

@@ -1,0 +1,52 @@
+########################### filebeat.yml ###########################
+
+# Don’t try to fetch or write the _license document
+setup.license.enabled: false
+
+###################### Raw ModSecurity Audit Logs ######################
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /var/log/modsec/modsec_audit.json   # mounted from ./logs/modsec
+    json.keys_under_root: true
+    json.add_error_key: true
+
+###################### Suricata Module ######################
+# Inline Suricata module configuration—no modules.d lookup needed
+filebeat.modules:
+  - module: suricata
+    log:
+      enabled: false      # disable the older logfileset
+    eve:
+      enabled: true
+      var.paths:
+        - /var/log/suricata/eve.json        # mounted from ./logs/suricata
+
+###################### Ingest Pipeline & Template ######################
+setup.template.name: "filebeat"
+setup.template.pattern: "filebeat-*"
+
+###################### Logging ######################
+logging.to_files: false  # disable file-based logging in container
+
+###################### Elasticsearch Output ######################
+output.elasticsearch:
+  hosts: ["https://wazuh.indexer:9200"]   # service on siemnet
+  protocol: "https"
+  ssl.verification_mode: full
+  ssl.certificate_authorities: ["/etc/ssl/root-ca.pem"]
+  ssl.certificate: "/etc/ssl/cert.pem"
+  ssl.key: "/etc/ssl/key.pem"
+  username: "admin"
+  password: "SecretPassword"
+
+###################### Optional Custom Index ######################
+# Uncomment to route ModSecurity JSON to a dedicated index
+#output.elasticsearch.indices:
+#  - index: "modsecurity-%{+yyyy.MM.dd}"
+#    when.contains:
+#      fileset.module: "modsecurity"
+
+########################### End ###########################
+
