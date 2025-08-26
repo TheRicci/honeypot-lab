@@ -86,6 +86,35 @@ graph TD
 
 ---
 
+## 🤔 Why Wazuh?
+
+Wazuh was chosen as the core SIEM for this stack because it offers several unique advantages:
+
+🖥️ Agent-Based Monitoring
+Wazuh provides lightweight agents that run directly on endpoints and containers. These agents collect logs, monitor processes, file integrity, and system activity, giving deep visibility into what’s happening inside the honeypot.
+
+📋 Strong Baseline Detection
+In a tightly controlled and fully patched environment, Wazuh can detect deviations from the expected baseline. If a compromise occurs despite all services being up to date, this strongly suggests exploitation of an unknown (0day) vulnerability.
+
+⚡ Real-Time Correlation
+The Wazuh Manager correlates data from multiple sources (honeypot logs, IDS alerts, network monitors, and system telemetry) to identify complex attack patterns that individual tools may miss.
+
+🌍 Threat Intelligence Integration
+Wazuh supports integration with external threat feeds, allowing correlation between live attacks and known malicious indicators — and extending with custom services like Threat Central in this project.
+
+🔐 Security Ecosystem Compatibility
+
+Built-in support for Suricata, Zeek, and ModSecurity logs
+
+SSL/TLS support for secure communication
+
+Strong API and dashboard for visualization
+
+📊 Open & Extensible
+As an open-source SIEM, Wazuh allows full customization of rules, decoders, and alerts, making it ideal for a research-oriented honeypot ecosystem.
+
+---
+
 ## 🏗️ Architecture Overview
 
 ### Security Layers
@@ -93,7 +122,7 @@ graph TD
 1. **🌐 Entry Point**
    - ModSecurity WAF with OWASP Core Rule Set
    - SSL/TLS termination
-   - Traffic filtering and logging
+   - Traffic analysis and logging
 
 2. **🍯 Detection Layer**
    - Go-based honeypot for attack simulation
@@ -142,7 +171,7 @@ graph TD
 
 ### 🔄 Data Flow
 1. External traffic hits ModSec Proxy
-2. Filtered traffic reaches honeypot services
+2. Decrypted traffic reaches honeypot services
 3. All interactions logged by monitoring tools
 4. Logs processed and forwarded to Wazuh
 5. Events correlated and alerts generated
