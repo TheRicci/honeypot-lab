@@ -52,9 +52,12 @@ graph TD
     
     F --> G[🔍 Wazuh Indexer]
     G --> H[📊 Wazuh Dashboard]
-    
-    I[📋 FluentBit] --> G
-    J[🚀 Threat Central] --> G
+
+    D --> I[📋 FluentBit]
+    B --> I
+    F --> I
+
+    I[📋 FluentBit] --> J[🚀 Threat Central]
     
     classDef honeynet fill:#ff6b6b,stroke:#ff6b6b,stroke-width:2px,color:#fff
     classDef siemnet fill:#4ecdc4,stroke:#4ecdc4,stroke-width:2px,color:#fff
