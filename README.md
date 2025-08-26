@@ -3,6 +3,11 @@
 
 ---
 
+## 🎯 Objective
+Design and implement a proof-of-concept honeypot ecosystem, containerized with Docker, that integrates IDS and SIEM tools to capture, organize, and generate alerts for potential security threats.  
+
+---
+
 ## 📊 Traffic Flow
 
 ```
