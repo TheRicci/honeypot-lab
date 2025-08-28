@@ -179,22 +179,6 @@ As an open-source SIEM, Wazuh allows full customization of rules, decoders, and 
 
 ---
 
-## 🚀 Quick Start
-
-```bash
-# Clone the repository
-git clone <your-repo-url>
-
-# Start the security stack
-docker-compose up -d
-
-# Access dashboards
-echo "Wazuh Dashboard: https://localhost:5601"
-echo "Wazuh API: https://localhost:55000"
-```
-
----
-
 ## 📝 Configuration Files
 
 | Component | Configuration |
