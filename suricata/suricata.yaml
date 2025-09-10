@@ -64,6 +64,10 @@ outputs:
       filename: eve.json
       types:
         - alert
+      xff:
+        enabled: yes
+        mode: overwrite
+        deployment: reverse
 
 # af-packet
 af-packet:

@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.22.2
+FROM golang:1.24
 
 # Install Wazuh agent dependencies
 RUN apt-get update && apt-get install -y \
@@ -24,7 +24,7 @@ COPY go.mod ./
 RUN go mod download
 
 # Copy the source code
-COPY *.go ./
+COPY . ./
 
 # Build the Go application
 RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping

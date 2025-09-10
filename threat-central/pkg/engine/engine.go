@@ -65,7 +65,14 @@ func (e *Engine) Run(ctx context.Context) error {
 			log.Printf("[!] Error while awating for event: %s", err)
 			continue
 		}
-
+		if alert.DstPort != nil {
+			if *alert.DstPort == 80 {
+				alert.DstPort = &[]int{443}[0]
+			}
+			if *alert.DstPort == 21 {
+				alert.DstPort = &[]int{990}[0]
+			}
+		}
 		value := e.SharedData.IDSAlertsMap[fmt.Sprintf("%s-%s-%s", alert.IP, *alert.Threat, *alert.LogType)]
 		if value == nil {
 			e.SharedData.IDSAlertsMap[fmt.Sprintf("%s-%s-%s", alert.IP, *alert.Threat, *alert.LogType)] = alert

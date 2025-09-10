@@ -1,5 +1,17 @@
 FROM debian:bookworm-slim
 
+# Refresh certificates and keyrings first
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    gnupg \
+    dirmngr \
+    debian-archive-keyring \
+ && rm -rf /var/lib/apt/lists/*
+
+# Switch repo definitions to HTTPS
+RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' /etc/apt/sources.list.d/debian.sources \
+ && sed -i 's|http://security.debian.org|https://security.debian.org|g' /etc/apt/sources.list.d/debian.sources
+
 # 1) Install nginx, ModSecurity, jq, tools
 RUN apt-get update && apt-get install -y \
     nginx \
