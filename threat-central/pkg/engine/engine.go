@@ -8,6 +8,7 @@ import (
 	"net"
 	"sort"
 	"strconv"
+	"sync"
 	"threat-central/pkg/models"
 	"threat-central/pkg/storage"
 	"time"
@@ -44,6 +45,7 @@ type Engine struct {
 	SigChannel chan struct{}
 	SavePath   string
 	Rows       *[][]table.Row
+	mu         sync.Mutex
 }
 
 // NewEngine constructs the Engine.
@@ -53,6 +55,7 @@ func NewEngine(recv Receiver, fetch HistoryFetcher, resp Responder, ttl time.Dur
 		SigChannel: *ch,
 		SavePath:   dataPath,
 		Rows:       rows,
+		mu:         sync.Mutex{},
 	}
 }
 
@@ -139,6 +142,8 @@ func (e *Engine) Run(ctx context.Context) error {
 
 		go func() {
 			//fmt.Println(*e.SharedData)
+			e.mu.Lock()
+			defer e.mu.Unlock()
 			if err := storage.SaveSharedData(e.SavePath, e.SharedData); err != nil {
 				log.Printf("failed to save shared data: %v", err)
 			}

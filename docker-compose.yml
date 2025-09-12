@@ -28,7 +28,7 @@ services:
     networks:
       - siemnet
     volumes:
-      - ./shared_data.json:/app/shared_data.json
+      - ./data:/app/data:rw
     stdin_open: true   # keeps STDIN open (equivalent to -i)
     tty: true          # allocate a pseudo-TTY (equivalent to -t)
      

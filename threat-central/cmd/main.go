@@ -28,7 +28,7 @@ var (
 	SigChannel = make(chan struct{})
 )
 
-const dataFilePath = "shared_data.json"
+const dataFilePath = "/app/data/shared_data.json"
 
 func Run() error {
 	// Load configuration
