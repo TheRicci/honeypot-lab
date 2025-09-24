@@ -191,4 +191,164 @@ As an open-source SIEM, Wazuh allows full customization of rules, decoders, and 
 
 ---
 
+# 🚀 Quick Start Guide
+
+## Prerequisites
+
+- Docker and Docker Compose installed
+- Linux host (for max_map_count setting)
+- Root/sudo access for system configuration
+
+## 1. System Configuration
+
+### Linux Host Setup
+Increase the maximum number of memory map areas (required for Wazuh Indexer):
+
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
+
+To make this permanent, add to `/etc/sysctl.conf`:
+```bash
+echo 'vm.max_map_count=262144' | sudo tee -a /etc/sysctl.conf
+```
+
+## 2. Certificate Generation
+
+### Generate Wazuh Certificates
+Run the Wazuh certificate generation script:
+
+```bash
+docker-compose -f generate-indexer-certs.yml run --rm generator
+```
+
+This will create SSL certificates in `./config/wazuh_indexer_ssl_certs/` for:
+- Wazuh Indexer
+- Wazuh Manager  
+- Wazuh Dashboard
+- Root CA certificates
+
+### Generate ModSecurity SSL Certificates
+Create self-signed certificates for the ModSecurity proxy:
+
+```bash
+# Create certificate directory if it doesn't exist
+mkdir -p modsec-proxy
+
+# Generate private key
+openssl genrsa -out modsec-proxy/key.pem 2048
+
+# Generate certificate signing request
+openssl req -new -key modsec-proxy/key.pem -out modsec-proxy/cert.csr -subj "/C=US/ST=State/L=City/O=Organization/CN=localhost"
+
+# Generate self-signed certificate
+openssl x509 -req -days 365 -in modsec-proxy/cert.csr -signkey modsec-proxy/key.pem -out modsec-proxy/cert.pem
+
+# Clean up CSR file
+rm modsec-proxy/cert.csr
+```
+
+## 3. Start the Environment
+
+### Start All Services
+Launch the complete honeypot and SIEM stack:
+
+```bash
+# Start in background (recommended)
+docker-compose up -d
+
+# Or start in foreground to see logs
+docker-compose up
+```
+
+### Verify Services
+Check that all containers are running:
+
+```bash
+docker-compose ps
+```
+
+## 4. Access Points
+
+Once all services are running, you can access:
+
+| Service | URL | Credentials |
+|---------|-----|-------------|
+| **Wazuh Dashboard** | https://localhost:5601 | `admin` / `SecretPassword` |
+| **Wazuh API** | https://localhost:55000 | `wazuh-wui` / `MyS3cr37P450r.*-` |
+| **Honeypot (HTTPS through nginx proxy)** | https://localhost:443 | - |
+| **FTP (TLS through nginx proxy)** | ftp://localhost:990 | - |
+
+## 5. First Steps
+
+1. **Access Wazuh Dashboard**: Navigate to https://localhost:5601
+2. **Login**: Use `admin` / `SecretPassword`
+3. **Check Agent Status**: Go to "Agents" to verify the honeypot agent is connected
+4. **View Logs**: Check "Logs" section for real-time security events
+5. **Test Honeypot**: Send requests to http://localhost:80 or https://localhost:443
+
+## 6. Monitoring
+
+### View Logs
+```bash
+# View all service logs
+docker-compose logs -f
+
+# View specific service logs
+docker-compose logs -f wazuh.manager
+docker-compose logs -f modsec-proxy
+docker-compose logs -f honeypot
+```
+
+### Threat-Central
+```bash
+sudo docker compose exec threat-central ./threat-central
+```
+
+### Check Service Health
+```bash
+# Check container status
+docker-compose ps
+
+# Check resource usage
+docker stats
+```
+
+## 7. Troubleshooting
+
+### Common Issues
+
+**Wazuh Indexer won't start:**
+- Ensure `vm.max_map_count=262144` is set
+- Check available disk space (requires ~2GB)
+
+**Certificate errors:**
+- Verify certificates were generated in correct directories
+- Check file permissions on certificate files
+
+**Network connectivity issues:**
+- Ensure ports 80, 443, 5601, 55000 are not in use
+- Check Docker network configuration
+
+### Reset Environment
+```bash
+# Stop all services
+docker-compose down
+
+# Remove volumes (WARNING: This deletes all data)
+docker-compose down -v
+
+# Rebuild and restart
+docker-compose up --build -d
+```
+
+## 8. Next Steps
+
+- Configure custom ModSecurity rules in `./modsecurity/`
+- Add custom Suricata rules in `./suricata/rules/`
+- Customize Zeek scripts in `./zeek/site/`
+- Set up custom Wazuh rules in `./wazuh-manager/ruleset/`
+
+---
+
 *This architecture provides comprehensive security monitoring with honeypot capabilities, network intrusion detection, and centralized SIEM analysis.*
