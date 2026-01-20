@@ -3,12 +3,12 @@
 
 ---
 
-## 🎯 Objective
+## Objective
 Design and implement a proof-of-concept honeypot ecosystem, containerized with Docker, that integrates IDS and SIEM tools to capture, organize, and generate alerts for potential security threats.  
 
 ---
 
-## 📊 Traffic Flow
+## Traffic Flow
 
 ```
 🌐 Internet Traffic → 🔒 ModSec Proxy → 🍯 Honeypot → 📈 SIEM Analysis
@@ -16,32 +16,32 @@ Design and implement a proof-of-concept honeypot ecosystem, containerized with D
 
 ---
 
-## 🌐 Network Architecture
+## Network Architecture
 
-### 🍯 HoneyNet
+### HoneyNet
 > **Purpose:** Attack detection and analysis network
 
 | Service | Description | Ports | Key Features |
 |---------|-------------|-------|--------------|
-| **🍯 Honeypot (Go)** | Main honeypot service with Wazuh agent integration | - | Privileged mode, SIEM connectivity |
-| **🛡️ ModSec Proxy** | NGINX + ModSecurity Web Application Firewall | `80:80`, `443:443`, `990:990` | OWASP CRS, SSL/TLS |
-| **🔍 Suricata IDS** | Network intrusion detection system | - | AF-PACKET, Auto-FP, Custom rules |
-| **📊 Zeek Network Monitor** | Network security monitoring & analysis | - | Custom logging, Protocol analysis |
+| **Honeypot (Go)** | Main honeypot service with Wazuh agent integration | - | Privileged mode, SIEM connectivity |
+| **ModSec Proxy** | NGINX + ModSecurity Web Application Firewall | `80:80`, `443:443`, `990:990` | OWASP CRS, SSL/TLS |
+| **Suricata IDS** | Network intrusion detection system | - | AF-PACKET, Auto-FP, Custom rules |
+| **Zeek Network Monitor** | Network security monitoring & analysis | - | Custom logging, Protocol analysis |
 
-### 🔧 SIEM Network
+### SIEM Network
 > **Purpose:** Security information and event management
 
 | Service | Description | Ports | Key Features |
 |---------|-------------|-------|--------------|
-| **⚡ Wazuh Manager** | Central SIEM management & correlation engine | `1514:1514`, `1515:1515`, `514:514/udp`, `55000:55000` | All security tools logging |
-| **🔍 Wazuh Indexer** | OpenSearch-based data indexing & storage | `9200:9200` | SSL/TLS, Authentication |
-| **📊 Wazuh Dashboard** | Web-based security analytics dashboard | `5601:5601` | Real-time monitoring, Alerting |
-| **🚀 Threat Central** | Custom threat intelligence service | - | Threat analysis & correlation |
-| **📋 FluentBit** | Log processor & forwarder | - | ModSec, Suricata, Wazuh logs |
+| **Wazuh Manager** | Central SIEM management & correlation engine | `1514:1514`, `1515:1515`, `514:514/udp`, `55000:55000` | All security tools logging |
+| **Wazuh Indexer** | OpenSearch-based data indexing & storage | `9200:9200` | SSL/TLS, Authentication |
+| **Wazuh Dashboard** | Web-based security analytics dashboard | `5601:5601` | Real-time monitoring, Alerting |
+| **Threat Central** | Custom threat intelligence service | - | Threat analysis & correlation |
+| **FluentBit** | Log processor & forwarder | - | ModSec, Suricata, Wazuh logs |
 
 ---
 
-## 🔄 Service Dependencies
+## Service Dependencies
 
 ```mermaid
 graph TD
@@ -75,7 +75,7 @@ graph TD
 
 ---
 
-## 📈 Stack Statistics
+## Stack Statistics
 
 | Metric | Count | Description |
 |--------|-------|-------------|
@@ -86,23 +86,23 @@ graph TD
 
 ---
 
-## 🤔 Why Wazuh?
+## Why Wazuh?
 
 Wazuh was chosen as the core SIEM for this stack because it offers several unique advantages:
 
-🖥️ Agent-Based Monitoring
+Agent-Based Monitoring
 Wazuh provides lightweight agents that run directly on endpoints and containers. These agents collect logs, monitor processes, file integrity, and system activity, giving deep visibility into what’s happening inside the honeypot.
 
-📋 Strong Baseline Detection
+Strong Baseline Detection
 In a tightly controlled and fully patched environment, Wazuh can detect deviations from the expected baseline. If a compromise occurs despite all services being up to date, this strongly suggests exploitation of an unknown (0day) vulnerability.
 
-⚡ Real-Time Correlation
+Real-Time Correlation
 The Wazuh Manager correlates data from multiple sources (honeypot logs, IDS alerts, network monitors, and system telemetry) to identify complex attack patterns that individual tools may miss.
 
-🌍 Threat Intelligence Integration
+Threat Intelligence Integration
 Wazuh supports integration with external threat feeds, allowing correlation between live attacks and known malicious indicators — and extending with custom services like Threat Central in this project.
 
-🔐 Security Ecosystem Compatibility
+Security Ecosystem Compatibility
 
 Built-in support for Suricata, Zeek, and ModSecurity logs
 
@@ -119,22 +119,22 @@ As an open-source SIEM, Wazuh allows full customization of rules, decoders, and 
 
 ### Security Layers
 
-1. **🌐 Entry Point**
+1. **Entry Point**
    - ModSecurity WAF with OWASP Core Rule Set
    - SSL/TLS termination
    - Traffic analysis and logging
 
-2. **🍯 Detection Layer**
+2. **Detection Layer**
    - Go-based honeypot for attack simulation
    - Suricata IDS for network intrusion detection
    - Zeek for deep packet inspection and analysis
 
-3. **📊 Analysis Layer**
+3. **Analysis Layer**
    - Wazuh SIEM for event correlation
    - Custom threat intelligence integration
    - Real-time alerting and response
 
-4. **💾 Storage Layer**
+4. **Storage Layer**
    - OpenSearch-based indexing
    - Persistent log storage
    - Historical analysis capabilities
@@ -155,21 +155,21 @@ As an open-source SIEM, Wazuh allows full customization of rules, decoders, and 
 
 ## 🔐 Security Features
 
-### 🛡️ Protection Mechanisms
+### Protection Mechanisms
 - **Web Application Firewall** - ModSecurity with OWASP CRS
 - **Network IDS** - Suricata with custom rules
 - **Deep Packet Inspection** - Zeek network analysis
 - **SSL/TLS Encryption** - Certificate-based security
 - **Access Control** - Network segmentation and authentication
 
-### 📋 Monitoring Capabilities
+### Monitoring Capabilities
 - **Real-time Alerts** - Immediate threat notification
 - **Log Aggregation** - Centralized logging via FluentBit
 - **Event Correlation** - Wazuh rule-based analysis
 - **Threat Intelligence** - Custom threat data integration
 - **Historical Analysis** - Long-term trend analysis
 
-### 🔄 Data Flow
+### Data Flow
 1. External traffic hits ModSec Proxy
 2. Decrypted traffic reaches honeypot services
 3. All interactions logged by monitoring tools
